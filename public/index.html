@@ -1,34 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
-    <link rel="stylesheet" href="styles.css">
-
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <div class="full-top">
-    <div class="top">
-    <h1>Chat Online</h1>
-    <div class="right">
-    <form>
-       Display Name: <input type="text" pattern="^[a-zA-Z0-9]{2,7}$" name="username" required> <input type="submit" value="set"></div>
-      </form>
+      <div class="top">
+        <h1>Chat Online</h1>
+        <div class="right">
+          <form>
+            Display Name:
+            <input
+              type="text"
+              pattern="^[a-zA-Z0-9]{2,7}$"
+              name="username"
+              id="displayName"
+              required
+            />
+            <input type="submit" value="set" />
+          </form>
+        </div>
       </div>
-      <div class="top-menu">
-        <a>link 1</a> <a>link 2</a> <a>link 3</a>
-    </div>
+      <div class="top-menu"><a>demo 1</a> <a>demo 2</a> <a>demo 3</a></div>
     </div>
 
     <div id="content" class="content-box">
-    asda
+      <ul id="messageDisplay" class="biglist"></ul>
+      <script>
+        async function getmessages() {
+          console.log("Getting Messages...");
+          const list = document.getElementById("messageDisplay");
+          list.innerHTML = "";
+          try {
+            const res = await fetch("/api/messages");
+            console.log("status", res.status, "ok?", res.ok);
+            const data = await res.json();
+            console.log("data", data);
+            if (!res.ok) throw new Error("Network error");
+
+            const messages = Array.isArray(data) ? data.slice().reverse() : [];
+            messages.forEach((row) => {
+              const li = document.createElement("li");
+
+              li.innerHTML = `<a class="username">${row.username}:</a>
+                <a class="message"> ${row.mesage}</a>
+                <p class="timestamp"> ${row.timestmp}</p>
+                `;
+              list.appendChild(li);
+            });
+          } catch (err) {
+            console.log(err);
+          }
+        }
+
+        async function afterRender() {
+          const container = document.querySelector(".content-box");
+          const sleep = (ms) =>
+            new Promise((resolve) => setTimeout(resolve, ms));
+          await sleep(600);
+          container.scrollTop = container.scrollHeight;
+          console.log("Scrolled");
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+          getmessages();
+          afterRender();
+        });
+      </script>
     </div>
     <div class="user-box">
-        <form>
-        <input class="text" value="Type message here" pattern="^[a-zA-Z0-9]{1,1500}$" >
-        <input class="enter" type="submit" value="send">
-        </form>
+      <form onsubmit="sendmessage(event)">
+        <input
+          class="text"
+          placeholder="Type message here"
+          pattern="^[a-zA-Z0-9 ]{1,500}$"
+          id="messagebox"
+        />
+        <input class="enter" type="submit" value="send" />
+        <script>
+          async function sendmessage(e) {
+            console.log("Sending Message...");
+            const params = new URLSearchParams(window.location.search);
+            const displayName = params.get("username");
+            if (displayName) {
+              document.getElementById("displayName").value = displayName;
+            } else if (!displayName) {
+              alert("Please set a username");
+              console.log("No username set!");
+              return;
+            }
+
+            e.preventDefault();
+            const msg = document.getElementById("messagebox").value.trim();
+            console.log("Message:\n" + msg);
+            if (!msg) {
+              return;
+            }
+
+            try {
+              const res = await fetch("/api/messages", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ displayName, message: msg }),
+              });
+              if (!res.ok) throw new Error("Failed to send");
+              console.log("Getting Messages...");
+              getmessages(); // refresh list after a successful insert
+            } catch (err) {
+              console.error(err);
+            }
+          }
+        </script>
+      </form>
     </div>
-</body>
+  </body>
 </html>

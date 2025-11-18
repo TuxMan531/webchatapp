@@ -1,5 +1,5 @@
 body {
-    /* lock scrolling ? */
+  /* lock scrolling ? */
   display: grid;
   margin: 0;
   padding: 0;
@@ -22,84 +22,116 @@ h2 {
 }
 
 .top {
-    grid-row: 1;
-    padding-top: 2px;
-    border-radius: 8px;
-    margin-top: 0px;
-    margin-left: 16px; margin-right: 16px;
-    height: 60px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
+  grid-row: 1;
+  padding-top: 2px;
+  border-radius: 8px;
+  margin-top: 0px;
+  margin-left: 16px;
+  margin-right: 16px;
+  height: 60px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
 }
 .top input[type="text"] {
-    padding: 0 8px;
-    width: 80px;
+  padding: 0 8px;
+  width: 80px;
 }
 .right {
-    margin-left: auto; /* push to the right */
-    margin-right: 16px;
-    color: #3a3a3a;
-    display: flex;
-    align-items: center; /* vertically center text and input */
-    gap: 8px; /* space between text and input */
+  margin-left: auto; /* push to the right */
+  margin-right: 16px;
+  color: #3a3a3a;
+  display: flex;
+  align-items: center; /* vertically center text and input */
+  gap: 8px; /* space between text and input */
 }
 .top-menu {
-    border-top: #3a3a3a 1px solid;
-    grid-row: 2;
-    padding: 5px;
-    margin-left: 16px; margin-right: 16px;
-    display: flex;
-    justify-content: center; /* center links horizontally */
-    align-items: center; /* vertically center links */
-    gap: 16px; /* space between links */
+  border-top: #3a3a3a 1px solid;
+  grid-row: 2;
+  padding: 5px;
+  margin-left: 16px;
+  margin-right: 16px;
+  display: flex;
+  justify-content: center; /* center links horizontally */
+  align-items: center; /* vertically center links */
+  gap: 16px; /* space between links */
 }
 .full-top {
-    grid-row: 1;
-    display: grid;
-    background-color: #e1e1e1;
-    grid-template-rows: auto auto;
+  grid-row: 1;
+  display: grid;
+  background-color: #e1e1e1;
+  grid-template-rows: auto auto;
 }
 
 .content-box {
-    grid-row: 2;
-    background-color: #3a3a3a;
-    padding: 16px;
-    border-radius: 8px;
-    margin: 16px;
-    height: calc(100vh - 250px);
-    overflow: hidden;
+  grid-row: 2;
+  background-color: #c3c3c3;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px;
+  height: calc(100vh - 250px);
+  overflow-x: wrap;
+  overflow-y: scroll;
+  white-space: nowrap;
 }
+
+.biglist {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  white-space: nowrap;
+}
+
+a.username {
+  font-weight: bold;
+  margin: 1px;
+  white-space: nowrap;
+}
+
+a.message {
+  color: #3a3a3a;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+p.timestamp {
+  font-size: 0.8em;
+  color: #777;
+  margin: 0px;
+  padding-bottom: 5px;
+}
+
 .user-box {
-    grid-row: 3;
-    background-color: #e1e1e1;
-    padding: 16px;
-    border-radius: 8px;
-    margin: 16px;
-    height: 35px;
+  grid-row: 3;
+  background-color: #e1e1e1;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px;
+  height: 35px;
 }
 
 .enter {
-    height: 100%;
-    border: none;
-    float: right;
-    background-color: #3a3a3a;
-    color: white;
-    padding: 0 16px;
-    border-radius: 4px;
-    cursor: pointer;
+  height: 100%;
+  border: none;
+  float: right;
+  background-color: #3a3a3a;
+  color: white;
+  padding: 0 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .user-box form {
-    height: 100%;
-    border: none;
-    padding: 0px 0px;
+  height: 100%;
+  border: none;
+  padding: 0px 0px;
 }
 .user-box form .text {
-    height: 100%;
-    width: calc(100% - 80px);
-    border: none;
-    padding: 0 8px; /* text padding */
-    border-radius: 4px;
-    box-sizing: border-box; /* is margin between text and send button */
+  height: 100%;
+  width: calc(100% - 80px);
+  border: none;
+  padding: 0 8px; /* text padding */
+  border-radius: 4px;
+  box-sizing: border-box; /* is margin between text and send button */
 }

@@ -1,0 +1,25 @@
+{
+  "name": "webchatapp",
+  "version": "1.0.0",
+  "description": "chat on web",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TuxMan531/webchatapp.git"
+  },
+  "author": "tuxman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TuxMan531/webchatapp/issues"
+  },
+  "homepage": "https://github.com/TuxMan531/webchatapp#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.15.3"
+  }
+}
