@@ -75,6 +75,7 @@
         <input
           class="text"
           placeholder="Type message here"
+          type="text"
           pattern="^[a-zA-Z0-9 ]{1,500}$"
           id="messagebox"
         />
@@ -108,6 +109,7 @@
               if (!res.ok) throw new Error("Failed to send");
               console.log("Getting Messages...");
               getmessages(); // refresh list after a successful insert
+              afterRender();
             } catch (err) {
               console.error(err);
             }
