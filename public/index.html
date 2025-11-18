@@ -63,6 +63,9 @@
           await sleep(600);
           container.scrollTop = container.scrollHeight;
           console.log("Scrolled");
+          const textbox = document.getElementById("messagebox");
+          textbox.value = "";
+          textbox.focus();
         }
         document.addEventListener("DOMContentLoaded", () => {
           getmessages();
