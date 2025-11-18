@@ -41,7 +41,7 @@ app.post("/api/messages", async (req, res) => {
   const trimmedName = (displayName || "").trim();
   const sendMsg = (message || "").trim();
   const namePattern = /^[a-zA-Z0-9]{2,7}$/;
-  const msgPattern = /^[a-zA-Z0-9 .,!?'":;()_\-]{1,500}$/;
+  const msgPattern = /^[a-zA-Z0-9 .,!?':;()_\-]{1,500}$/;
 
   if (!sendMsg) {
     return res.status(400).json({ error: "Message required" });
