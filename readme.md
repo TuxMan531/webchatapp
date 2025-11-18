@@ -29,7 +29,13 @@ open‑source, lightweight web chat application for real‑time messaging.
 ## SQL commands
 
 ```sql
-put sql here create the table tables
+CREATE TABLE `messages` (
+  `msgID` int NOT NULL AUTO_INCREMENT,
+  `mesage` varchar(1501) NOT NULL,
+  `username` varchar(16) NOT NULL,
+  `timestmp` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`msgID`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 ```
 
 ## License
