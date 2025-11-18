@@ -57,15 +57,15 @@
         }
 
         async function afterRender() {
+          const textbox = document.getElementById("messagebox");
+          textbox.value = "";
+          textbox.focus();
           const container = document.querySelector(".content-box");
           const sleep = (ms) =>
             new Promise((resolve) => setTimeout(resolve, ms));
           await sleep(600);
           container.scrollTop = container.scrollHeight;
           console.log("Scrolled");
-          const textbox = document.getElementById("messagebox");
-          textbox.value = "";
-          textbox.focus();
         }
         document.addEventListener("DOMContentLoaded", () => {
           getmessages();
