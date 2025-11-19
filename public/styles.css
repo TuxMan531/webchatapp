@@ -70,9 +70,10 @@ h2 {
   border-radius: 8px;
   margin: 16px;
   height: calc(100vh - 250px);
-  overflow-x: wrap;
   overflow-y: scroll;
-  white-space: nowrap;
+  overflow-x: hidden;
+  white-space: normal;       /* allow wrapping */
+  overflow-wrap: break-word;
 }
 
 .biglist {
@@ -91,7 +92,7 @@ a.username {
 
 a.message {
   color: #3a3a3a;
-  white-space: nowrap;
+  white-space: normal;
   margin-bottom: 0;
 }
 
