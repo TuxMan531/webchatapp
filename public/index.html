@@ -11,11 +11,18 @@
       <div class="top">
         <h1>Chat Online</h1>
         <div class="right">
+          <button
+            type="button"
+            onclick="fullLoad();"
+            style="margin-right: 50px"
+          >
+            Refresh Messages
+          </button>
           <form>
             Display Name:
             <input
               type="text"
-              pattern="^[a-zA-Z0-9]{2,7}$"
+              pattern="^[a-zA-Z0-9]{2,13}$"
               name="username"
               id="displayName"
               required
@@ -41,6 +48,7 @@
             console.log("data", data);
             if (!res.ok) throw new Error("Network error");
 
+            //flips array so that new messages are bottom to top
             const messages = Array.isArray(data) ? data.slice().reverse() : [];
             messages.forEach((row) => {
               const li = document.createElement("li");
@@ -67,9 +75,14 @@
           container.scrollTop = container.scrollHeight;
           console.log("Scrolled");
         }
-        document.addEventListener("DOMContentLoaded", () => {
+
+        async function fullLoad() {
           getmessages();
           afterRender();
+        }
+        
+        document.addEventListener("DOMContentLoaded", () => {
+          fullLoad();
         });
       </script>
     </div>
@@ -96,7 +109,7 @@
               return;
             }
 
-            e.preventDefault();
+            e.preventDefault(); // stops force reload
             const msg = document.getElementById("messagebox").value.trim();
             console.log("Message:\n" + msg);
             if (!msg) {

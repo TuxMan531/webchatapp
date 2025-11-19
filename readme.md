@@ -25,6 +25,7 @@ open‑source, lightweight web chat application for real‑time messaging.
 - Real time updating with websockets
 - Multible channels
 - Encrypted messaging
+- Password protected Admin chat view (with delete buttons)
 
 ## SQL commands
 

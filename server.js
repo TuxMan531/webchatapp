@@ -40,7 +40,7 @@ app.post("/api/messages", async (req, res) => {
 
   const trimmedName = (displayName || "").trim();
   const sendMsg = (message || "").trim();
-  const namePattern = /^[a-zA-Z0-9]{2,7}$/;
+  const namePattern = /^[a-zA-Z0-9]{2,13}$/;
   const msgPattern = /^[a-zA-Z0-9 .,!?:;_-]{1,1500}$/;
 
   if (!sendMsg) {
