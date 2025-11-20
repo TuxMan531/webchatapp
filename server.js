@@ -6,6 +6,7 @@ app.use(express.json());
 const mysql = require("mysql2");
 
 const port = 8080;
+let room = 0;
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -24,20 +25,40 @@ connection.connect((err) => {
 
 app.use(express.static("public")); // serve files from the public directory
 
-app.get("/api/messages", async (req, res) => {
+const allowedRooms = new Set(["0", "1", "2"]);
+app.get("/api/messages/:room", async (req, res) => {
+  const roomId = req.params.room;
+  console.log("roomId = req.params.room: " + roomId);
+  if (!allowedRooms.has(roomId)) {
+    return res.status(400).json({ error: "Invalid room" });
+  }
+  
+  const table = `messages${roomId}`;
+  const safeTable = connection.escapeId(table); //sql inject safety
+
   try {
-    const [rows] = await connection.promise().query("SELECT * FROM messages ORDER BY timestmp DESC LIMIT 2500;");
+    const [rows] = await connection
+      .promise()
+      .query(`SELECT * FROM ${safeTable} ORDER BY timestmp DESC LIMIT 2500;`);
     res.json(rows);
-    console.log("Messages Loaded!")
+    console.log("Messages Loaded!");
   } catch (err) {
     console.error("DB error", err);
     res.status(500).json({ error: "Database error" });
   }
 });
 
-app.post("/api/messages", async (req, res) => {
-  const { displayName, message } = req.body;
+app.post("/api/messages/:room", async (req, res) => {
+  const roomId = req.params.room;
+  console.log("roomId = req.params.room: " + roomId);
+  if (!allowedRooms.has(roomId)) {
+    return res.status(400).json({ error: "Invalid room" });
+  }
 
+  const table = `messages${roomId}`;
+  const safeTable = connection.escapeId(table); //sql inject safety
+  //#region
+  const { displayName, message } = req.body;
   const trimmedName = (displayName || "").trim();
   const sendMsg = (message || "").trim();
   const namePattern = /^[a-zA-Z0-9]{2,13}$/;
@@ -60,19 +81,20 @@ app.post("/api/messages", async (req, res) => {
   if (sendMsg == "Type message here") {
     return res.status(400).json({ error: "don't type that" });
   }
-    try {
-      const [result] = await connection
-        .promise()
-        .execute("INSERT INTO messages (mesage, username) VALUES (?, ?)", [
-          sendMsg,
-          trimmedName,
-        ]);
-      res.status(201).json({ id: result.insertId });
-      console.log("Message send successful!");
-    } catch (err) {
-      console.error("Insert error", err);
-      res.status(500).json({ error: "Database error" });
-    }
+  //#endregion
+  try {
+    const [result] = await connection
+      .promise()
+      .execute(`INSERT INTO ${table} (mesage, username) VALUES (?, ?)`, [
+        sendMsg,
+        trimmedName,
+      ]);
+    res.status(201).json({ id: result.insertId });
+    console.log("Message send successful to " + table + "!");
+  } catch (err) {
+    console.error("Insert error", err);
+    res.status(500).json({ error: "Database error" });
+  }
 });
 
 app.listen(port, () => {

@@ -7,6 +7,7 @@ open‑source, lightweight web chat application for real‑time messaging.
 - Responsive, browser‑based UI
 - Easy to self‑host and extend
 - Minimal dependencies
+- 3 different chat rooms
 
 ## Quick start
 
@@ -23,9 +24,11 @@ open‑source, lightweight web chat application for real‑time messaging.
 ## Future Features
 
 - Real time updating with websockets
-- Multible channels
+- Dynamic user channel creation
+- Password protected channels
 - Encrypted messaging
 - Password protected Admin chat view (with delete buttons)
+- AI powerd moderation (trust)
 
 ## SQL commands
 

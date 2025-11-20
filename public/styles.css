@@ -84,7 +84,7 @@ h2 {
   border-radius: 8px;
   margin: 16px;
   height: calc(100vh - 250px);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   white-space: normal;       /* allow wrapping */
   overflow-wrap: break-word;

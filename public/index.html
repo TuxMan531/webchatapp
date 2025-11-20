@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <script>
+      function getChannelParam(fallback = 0) {  // 0 fallack because it's main chat channel
+        return (
+          new URLSearchParams(window.location.search).get("setchat") ?? fallback
+        );
+      }
+    </script>
     <div class="full-top">
       <div class="top">
         <h1>Chat Online</h1>
@@ -18,7 +25,7 @@
           >
             Refresh Messages
           </button>
-          <form>
+          <form id="usernameForm">
             Display Name:
             <input
               type="text"
@@ -31,7 +38,27 @@
           </form>
         </div>
       </div>
-      <div class="top-menu"><a>demo 1</a> <a>demo 2</a> <a>demo 3</a></div>
+      <div class="top-menu">
+        <button onclick="setchat(0);">Chat 1</button>
+        <button onclick="setchat(1);">Chat 2</button>
+        <button onclick="setchat(2);">Chat 3</button>
+      </div>
+      <script>
+        async function setchat(room) {
+          const params = new URLSearchParams(window.location.search);
+          params.set("setchat", room);
+          window.location.search = "?" + params.toString();
+        }
+        document.getElementById("usernameForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const input = document.getElementById("displayName");
+            const params = new URLSearchParams(window.location.search);
+            params.set("username", input.value.trim());
+
+            // change this if I don't want refresh on submit v
+            window.location.search = "?" + params.toString();
+          });
+      </script>
     </div>
 
     <div id="content" class="content-box">
@@ -39,10 +66,11 @@
       <script>
         async function getmessages() {
           console.log("Getting Messages...");
+          room = getChannelParam();
           const list = document.getElementById("messageDisplay");
           list.innerHTML = "";
           try {
-            const res = await fetch("/api/messages");
+            const res = await fetch("/api/messages/" + room);
             console.log("status", res.status, "ok?", res.ok);
             const data = await res.json();
             console.log("data", data);
@@ -50,6 +78,7 @@
 
             //flips array so that new messages are bottom to top
             const messages = Array.isArray(data) ? data.slice().reverse() : [];
+
             messages.forEach((row) => {
               const li = document.createElement("li");
 
@@ -80,7 +109,7 @@
           getmessages();
           afterRender();
         }
-        
+
         document.addEventListener("DOMContentLoaded", () => {
           fullLoad();
         });
@@ -117,7 +146,7 @@
             }
 
             try {
-              const res = await fetch("/api/messages", {
+              const res = await fetch("/api/messages/" + room, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ displayName, message: msg }),
