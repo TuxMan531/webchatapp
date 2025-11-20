@@ -27,7 +27,7 @@ open‑source, lightweight web chat application for real‑time messaging.
 - Dynamic user channel creation
 - Password protected channels
 - Encrypted messaging
-- Password protected Admin chat view (with delete buttons)
+- Password protected Admin chat view for publicchat (delete buttons)
 - AI powerd moderation (trust)
 
 ## SQL commands
