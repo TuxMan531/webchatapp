@@ -17,8 +17,14 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) {
-    console.error("Error connecting to MySQL:", err);
-    return;
+    // if this then retry mysql connection
+    //DB error Error: Can't add new command when connection is in closed state
+    try {
+      console.error("Error connecting to MySQL:", err, "\nRetrying...");
+      connection.connect();
+    } catch (e) {
+      console.error("Retrying connection failed:", e);
+    }
   }
   console.log("Connected to MySQL database!");
 });
@@ -32,7 +38,7 @@ app.get("/api/messages/:room", async (req, res) => {
   if (!allowedRooms.has(roomId)) {
     return res.status(400).json({ error: "Invalid room" });
   }
-  
+
   const table = `messages${roomId}`;
   const safeTable = connection.escapeId(table); //sql inject safety
 
@@ -44,6 +50,7 @@ app.get("/api/messages/:room", async (req, res) => {
     console.log("Messages Loaded!");
   } catch (err) {
     console.error("DB error", err);
+    connection.connect();
     res.status(500).json({ error: "Database error" });
   }
 });
